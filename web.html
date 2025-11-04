@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>موقع عرض المواقع</title>
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #34495e;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* تصميم الهيدر */
+        header {
+            background: linear-gradient(135deg, var(--secondary-color), var(--dark-color));
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo {
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+        }
+        
+        .site-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .nav-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-btn:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+        
+        /* تصميم الصفحة الرئيسية */
+        .home-page {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .page-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: var(--secondary-color);
+            font-size: 2rem;
+        }
+        
+        .sites-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .site-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .site-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .site-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .site-info {
+            padding: 15px;
+        }
+        
+        .site-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+        }
+        
+        .site-url {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+        
+        /* تصميم صفحة عرض الموقع */
+        .site-page {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+        }
+        
+        .site-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .back-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .site-frame-container {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #site-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* تصميم متجاوب للهواتف */
+        @media (max-width: 768px) {
+            header {
+                padding: 1rem;
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .home-page {
+                padding: 1rem;
+            }
+            
+            .sites-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- الصفحة الرئيسية -->
+    <div id="home-page" class="home-page">
+        <header>
+            <div class="logo-container">
+                <div class="logo">W</div>
+                <div class="site-name">موقع المواقع</div>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" id="btn-home">الرئيسية</button>
+                <button class="nav-btn" id="btn-about">حول</button>
+                <button class="nav-btn" id="btn-contact">اتصل بنا</button>
+            </div>
+        </header>
+        
+        <h1 class="page-title">قائمة المواقع المتاحة</h1>
+        
+        <div class="sites-list" id="sites-list">
+            <!-- سيتم ملء هذه القائمة ديناميكيًا -->
+        </div>
+    </div>
+    
+    <!-- صفحة عرض الموقع -->
+    <div id="site-page" class="site-page">
+        <div class="site-header">
+            <button class="back-btn" id="back-btn">← العودة</button>
+            <div id="current-site-name">اسم الموقع</div>
+        </div>
+        <div class="site-frame-container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+            </div>
+            <iframe id="site-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>
+        </div>
+    </div>
+
+    <script>
+        // بيانات المواقع
+        const sitesData = {
+            "sites": [
+                {
+                    "id": 1,
+                    "site_url": "https://topcinema.pro/",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 2,
+                    "site_url": "https://www.faselhds.cam",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 3,
+                    "site_url": "https://www.awaan.ae/",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 4,
+                    "site_url": "https://a.asd.homes/main0/",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 5,
+                    "site_url": "https://topcinema.pro",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 6,
+                    "site_url": "https://adtv.ae/ar/movies",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 7,
+                    "site_url": "https://moviz-time.live",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 8,
+                    "site_url": "https://wecima.beer/",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 9,
+                    "site_url": "https://m.cimaleek.to/",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 10,
+                    "site_url": "https://ak.sv/movies?section=30",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 11,
+                    "site_url": "https://ciimaclub.club/category/افلام-اجنبي/",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                },
+                {
+                    "id": 12,
+                    "site_url": "https://i-egybest.com/",
+                    "image_url": "https://raw.githubusercontent.com/Yassineaaraich/SE-RB/refs/heads/main/Untitled8_20251102151907.png"
+                }
+            ]
+        };
+
+        // عناصر DOM
+        const homePage = document.getElementById('home-page');
+        const sitePage = document.getElementById('site-page');
+        const sitesList = document.getElementById('sites-list');
+        const siteFrame = document.getElementById('site-frame');
+        const backBtn = document.getElementById('back-btn');
+        const currentSiteName = document.getElementById('current-site-name');
+        const loading = document.getElementById('loading');
+
+        // استخراج اسم الموقع من الرابط
+        function getSiteName(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return domain.replace('www.', '').split('.')[0];
+            } catch (e) {
+                return url.split('/')[2] || url;
+            }
+        }
+
+        // عرض قائمة المواقع
+        function displaySites() {
+            sitesList.innerHTML = '';
+            
+            sitesData.sites.forEach(site => {
+                const siteName = getSiteName(site.site_url);
+                
+                const siteCard = document.createElement('div');
+                siteCard.className = 'site-card';
+                siteCard.innerHTML = `
+                    <img src="${site.image_url}" alt="${siteName}" class="site-image">
+                    <div class="site-info">
+                        <div class="site-name">${siteName}</div>
+                        <div class="site-url">${site.site_url}</div>
+                    </div>
+                `;
+                
+                siteCard.addEventListener('click', () => {
+                    openSite(site.site_url, siteName);
+                });
+                
+                sitesList.appendChild(siteCard);
+            });
+        }
+
+        // فتح الموقع في iframe
+        function openSite(url, name) {
+            homePage.style.display = 'none';
+            sitePage.style.display = 'flex';
+            currentSiteName.textContent = name;
+            
+            loading.style.display = 'flex';
+            siteFrame.src = url;
+            
+            // إضافة محاولة لمنع الإعلانات المنبثقة
+            siteFrame.onload = function() {
+                loading.style.display = 'none';
+                
+                // محاولة منع النوافذ المنبثقة
+                try {
+                    const iframeWindow = siteFrame.contentWindow;
+                    iframeWindow.open = function() {
+                        console.log('تم منع نافذة منبثقة');
+                        return null;
+                    };
+                } catch (e) {
+                    // لا يمكن الوصول إلى نافذة iframe بسبب سياسة CORS
+                    console.log('لا يمكن منع النوافذ المنبثقة بسبب سياسة الأمان');
+                }
+            };
+        }
+
+        // العودة إلى الصفحة الرئيسية
+        backBtn.addEventListener('click', () => {
+            sitePage.style.display = 'none';
+            homePage.style.display = 'block';
+            siteFrame.src = '';
+        });
+
+        // تهيئة التطبيق
+        document.addEventListener('DOMContentLoaded', () => {
+            displaySites();
+        });
+
+        // معالجة أزرار التنقل (يمكن توسيعها لاحقًا)
+        document.getElementById('btn-home').addEventListener('click', () => {
+            // نحن بالفعل في الصفحة الرئيسية
+        });
+        
+        document.getElementById('btn-about').addEventListener('click', () => {
+            alert('هذا التطبيق يعرض مجموعة من المواقع مع منع الإعلانات المنبثقة');
+        });
+        
+        document.getElementById('btn-contact').addEventListener('click', () => {
+            alert('للتواصل: example@email.com');
+        });
+    </script>
+</body>
+</html>

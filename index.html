@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ar">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>مكتبة الأفلام</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- الشريط العلوي -->
+  <header class="topbar">
+    <div class="brand">
+      <img src="logo.png" alt="Logo" class="logo" onerror="this.style.display='none'">
+      <img src=""/>
+      <h1>MoVIELINK</h1>
+    </div>
+    <button id="openSlider" class="slider-btn">☰</button>
+  </header>
+
+  <!-- القائمة الجانبية -->
+  <aside id="sidebar" class="sidebar">
+    <button id="closeSlider" class="close-btn">×</button>
+    <nav>
+      <a href="index.html" class="nav-btn" data-page="home">home</a>
+      <a href="ht.html" class="nav-btn">linkweb</a>
+      <a href="laaou.html" class="nav-btn">cantact</a>
+      <a href="ai.html" class="nav-btn">Ai-ram</a>
+      <a href href="#" class="nav-btn">py</a>
+      <a href="#" class="nav-btn"> MT</a>
+    </nav>
+  </aside>
+
+  <main class="container">
+    <!-- مربع البحث -->
+    <section class="search-area">
+      <input id="searchInput" placeholder="ابحث عن فيلم..." />
+      <button id="searchBtn">بحث</button>
+    </section>
+
+    <!-- شبكة الأفلام -->
+    <section id="grid" class="movies-grid"></section>
+  </main>
+
+  <!-- نافذة عرض تفاصيل الفيلم -->
+  <div id="movieModal" class="modal">
+    <div class="modal-content">
+      <button id="closeModal" class="close-modal">×</button>
+      <div class="modal-body">
+        <img id="modalImage" alt="صورة الفيلم">
+        <div class="modal-info">
+          <h2 id="modalTitle"></h2>
+          <p id="modalRating"></p>
+          <p class="quality">الجودة: 1080p</p>
+          <a id="watchBtn" class="watch-btn" target="_blank">🎥 مشاهدة الآن</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
